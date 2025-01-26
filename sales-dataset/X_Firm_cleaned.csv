@@ -1,4 +1,4 @@
-Invoice_Id,Branch,City,Category,Unit_Price,Quantity,Date,Time,Payment_Method,Rating,Profit_Margin,Total_Amount
+invoice_id,branch,city,category,unit_price,quantity,date,time,payment_method,rating,profit_margin,Total_Amount
 1,XF003,San Antonio,Health and beauty,74.69,7.0,05-01-2019,13:08:00,Ewallet,9.1,0.48,522.8299999999999
 2,XF048,Harlingen,Electronic accessories,15.28,5.0,08-03-2019,10:29:00,Cash,9.6,0.48,76.39999999999999
 3,XF067,Haltom City,Home and lifestyle,46.33,7.0,03-03-2019,13:23:00,Credit card,7.4,0.33,324.31
