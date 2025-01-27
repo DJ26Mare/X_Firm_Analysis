@@ -34,4 +34,22 @@ Select city , Min(rating) as min_rating , max(rating) as max_rating ,  ROUND(AVG
 From "Firm1"
 group by city
 order by 3 desc;
+
+--Q6 Calculate the total profit for each category by considering total_profit as (unit_price * quantity *profit_margin).
+--   List the catgory and total_profit,ordered from highest to lower profit.
+
+Select category , Sum( total_amount * profit_margin) as total_profit
+From "Firm1"
+group by  1
+order by 2 desc;
  
+--Q7 Determine the most common payment_method for each branch,display 	branch and the preferred payment_method.
+
+with Tab as(
+Select branch , payment_method , count(*) as no_of_transactions,Rank() Over(Partition by branch Order by 3 desc) as ranking
+From "Firm1"
+group by 1 , 2
+)
+Select * From Tab
+where ranking =1;
+Select 
