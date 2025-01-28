@@ -1,4 +1,4 @@
-Select * From "Firm1";
+Select * From "Firm1" ;
 
 -- ## Business Problems --
 
@@ -52,4 +52,44 @@ group by 1 , 2
 )
 Select * From Tab
 where ranking =1;
-Select 
+
+--Q8 Categorize sales into 3 group MORNING,AFTERNOON,EVENING.Find out which of the shift and no of invoices
+Select *,time::time  From "Firm1";
+Select branch ,
+Case   
+       WHEN Extract(HOUR FROM (time::time)) < 12 THEN 'MORNING'
+	   WHEN Extract (HOUR FROM (time::time)) Between 12 and 15 THEN 'AFTERNOON'
+	   WHEN Extract (HOUR FROM (time::time)) Between 15 and 20 THEN 'EVENING'
+	   END as Day_Phase
+	   
+	 , Count(*) as no_of_invoices
+	 
+FROM "Firm1"
+group by 1
+order by 3 desc;
+
+--Q9 Identify 5 branch with highest decrease ratio in revenue compare to last year(2022 and the year 2023)
+-- revenue decrease ratio = (last_year_rev - current_year_rev)/last_year_rev * 100
+Select *,To_Date(date, 'DD/MM/YY') as "Date" From "Firm1"
+
+With revenue_2022 as(
+Select branch , Sum(total_amount) as revenue
+From "Firm1"
+where Extract(Year From To_Date(date, 'DD/MM/YY')) =2022
+group by 1
+),
+ revenue_2023 as  (
+Select branch, Sum(total_amount) as revenue
+From "Firm1"
+where Extract(Year From To_Date(date, 'DD/MM/YY')) =2023
+group by 1
+)
+Select one.branch as branch, one.revenue as revenue_2022,two.revenue as revenue_2023 , Round((one.revenue - two.revenue)::numeric/one.revenue::numeric * 100,2) as rev_dec_rat 
+From revenue_2022 as one
+Join revenue_2023 as two
+on one.branch = two.branch
+order by 4 desc
+Limit 5;
+
+
+	   
