@@ -1,6 +1,6 @@
 # X_Firm_Analysis
 
-X_Firm Data Analysis: End-to-End SQL + Python Project P-9
+X_Firm Data Analysis: End-to-End SQL + Python Project 
 Project Overview
 Project Pipeline
 
