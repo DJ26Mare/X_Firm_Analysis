@@ -8,7 +8,7 @@ This project is an end-to-end data analysis solution designed to extract critica
 
 Project Steps
 1. Set Up the Environment
-Tools Used: Visual Studio Code (VS Code), Python, SQL (MySQL and PostgreSQL)
+Tools Used: Visual Studio Code (VS Code), Python, SQL (PostgreSQL used)
 Goal: Create a structured workspace within VS Code and organize project folders for smooth development and data handling.
 2. Set Up Kaggle API
 API Setup: Obtain your Kaggle API token from Kaggle by navigating to your profile settings and downloading the JSON file.
@@ -21,7 +21,7 @@ Dataset Link: X_Firm Sales Dataset
 Storage: Save the data in the data/ folder for easy reference and access.
 4. Install Required Libraries and Load Data
 Libraries: Install necessary Python libraries using:
-pip install pandas numpy sqlalchemy mysql-connector-python psycopg2
+pip install pandas numpy sqlalchemy postgresql-connector-python psycopg2
 Loading Data: Read the data into a Pandas DataFrame for initial analysis and transformations.
 5. Explore the Data
 Goal: Conduct an initial data exploration to understand data distribution, check column names, types, and identify potential issues.
@@ -63,16 +63,11 @@ Profit margin analysis by branch and category.
 Documentation: Keep clear notes of each query's objective, approach, and results.
 11. Project Publishing and Documentation
 Documentation: Maintain well-structured documentation of the entire process in Markdown or a Jupyter Notebook.
-Project Publishing: Publish the completed project on GitHub or any other version control platform, including:
-The README.md file (this document).
-Jupyter Notebooks (if applicable).
-SQL query scripts.
-Data files (if possible) or steps to access them.
 Requirements
 Python 3.8+
-SQL Databases: MySQL, PostgreSQL
+SQL Databases: PostgreSQL
 Python Libraries:
-pandas, numpy, sqlalchemy, mysql-connector-python, psycopg2
+pandas, numpy, sqlalchemy, postgresql-connector-python, psycopg2
 Kaggle API Key (for data downloading)
 Getting Started
 Clone the repository:
