@@ -43,7 +43,7 @@ From "Firm1"
 group by  1
 order by 2 desc;
  
---Q7 Determine the most common payment_method for each branch,display 	branch and the preferred payment_method.
+--Q7 Determine the most common payment_method for each branch,display branch and the preferred payment_method.
 
 with Tab as(
 Select branch , payment_method , count(*) as no_of_transactions,Rank() Over(Partition by branch Order by 3 desc) as ranking
@@ -70,7 +70,8 @@ order by 3 desc;
 
 --Q9 Identify 5 branch with highest decrease ratio in revenue compare to last year(2022 and the year 2023)
 -- revenue decrease ratio = (last_year_rev - current_year_rev)/last_year_rev * 100
-Select *,To_Date(date, 'DD/MM/YY') as "Date" From "Firm1"
+
+-- Select *,To_Date(date, 'DD/MM/YY') as "Date" From "Firm1"
 
 With revenue_2022 as(
 Select branch , Sum(total_amount) as revenue
