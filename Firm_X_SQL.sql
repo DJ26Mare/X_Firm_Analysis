@@ -109,5 +109,26 @@ on one.branch = two.branch
 order by 4 desc
 Limit 5;
 
+--Q10 Identify the categories contributing to more than 25% of the total revenue in the dataset.
+
+WITH revenue_per_product AS (
+    SELECT 
+        category,
+        SUM(total_amount) AS product_revenue
+    FROM sales
+    GROUP BY category
+),
+ranked_products AS (
+    SELECT 
+        category,
+        product_revenue,
+        product_revenue / (SELECT SUM(total_amount) FROM sales) * 100 AS revenue_pct,
+        SUM(product_revenue) OVER (ORDER BY product_revenue DESC) 
+            / (SELECT SUM(total_amount) FROM sales) * 100 AS cumulative_pct
+    FROM revenue_per_product
+)
+SELECT *
+FROM ranked_products
+WHERE cumulative_pct <= 25;
 
 	   
