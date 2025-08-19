@@ -129,6 +129,6 @@ ranked_products AS (
 )
 SELECT *
 FROM ranked_products
-WHERE cumulative_pct <= 25;
+WHERE cumulative_pct >= 25;
 
 	   
