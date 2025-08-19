@@ -13,16 +13,33 @@ GROUP BY payment_method;
 
 --Q2 Identify the highest-rated category in each branch, displaying the branch, category AVG RATING
 
-Select  branch , category , Avg(rating) as Average_Rating , Rank() Over(Partition by branch order by Avg(rating) desc) as rank
-From "Firm1"
-Group by rating,branch,category;
+SELECT branch, category, Average_Rating
+FROM (
+  SELECT 
+    branch, 
+    category, 
+    AVG(rating) AS Average_Rating,
+    RANK() OVER (PARTITION BY branch ORDER BY AVG(rating) DESC) AS rank
+  FROM "Firm1"
+  GROUP BY branch, category
+) sub
+WHERE rank = 1;
+
 
 --Q3 Identify the busiest day for each branch based on the number of transactions
 
-Select branch,TO_CHAR(To_Date(date, 'DD/MM/YY'),'day') as "Day",Count(*) as No_of_Transactions
-From "Firm1"
-group by branch,2
-order by 1,3 desc;
+SELECT branch, day, No_of_Transactions
+FROM (
+  SELECT 
+    branch,
+    TO_CHAR(TO_DATE(date, 'DD/MM/YY'), 'Day') AS day,
+    COUNT(*) AS No_of_Transactions,
+    RANK() OVER (PARTITION BY branch ORDER BY COUNT(*) DESC) AS rank
+  FROM "Firm1"
+  GROUP BY branch, TO_CHAR(TO_DATE(date, 'DD/MM/YY'), 'Day')
+) sub
+WHERE rank = 1
+ORDER BY branch;
 
 --Q4 Calculate the total quantity of items sold per payment method. List payment_method and total_quantity
 
