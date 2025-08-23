@@ -13,16 +13,33 @@ GROUP BY payment_method;
 
 --Q2 Identify the highest-rated category in each branch, displaying the branch, category AVG RATING
 
-Select  branch , category , Avg(rating) as Average_Rating , Rank() Over(Partition by branch order by Avg(rating) desc) as rank
-From "Firm1"
-Group by rating,branch,category;
+SELECT branch, category, Average_Rating
+FROM (
+  SELECT 
+    branch, 
+    category, 
+    AVG(rating) AS Average_Rating,
+    RANK() OVER (PARTITION BY branch ORDER BY AVG(rating) DESC) AS rank
+  FROM "Firm1"
+  GROUP BY branch, category
+) sub
+WHERE rank = 1;
+
 
 --Q3 Identify the busiest day for each branch based on the number of transactions
 
-Select branch,TO_CHAR(To_Date(date, 'DD/MM/YY'),'day') as "Day",Count(*) as No_of_Transactions
-From "Firm1"
-group by branch,2
-order by 1,3 desc;
+SELECT branch, day, No_of_Transactions
+FROM (
+  SELECT 
+    branch,
+    TO_CHAR(TO_DATE(date, 'DD/MM/YY'), 'Day') AS day,
+    COUNT(*) AS No_of_Transactions,
+    RANK() OVER (PARTITION BY branch ORDER BY COUNT(*) DESC) AS rank
+  FROM "Firm1"
+  GROUP BY branch, TO_CHAR(TO_DATE(date, 'DD/MM/YY'), 'Day')
+) sub
+WHERE rank = 1
+ORDER BY branch;
 
 --Q4 Calculate the total quantity of items sold per payment method. List payment_method and total_quantity
 
@@ -43,7 +60,7 @@ From "Firm1"
 group by  1
 order by 2 desc;
  
---Q7 Determine the most common payment_method for each branch,display 	branch and the preferred payment_method.
+--Q7 Determine the most common payment_method for each branch,display branch and the preferred payment_method.
 
 with Tab as(
 Select branch , payment_method , count(*) as no_of_transactions,Rank() Over(Partition by branch Order by 3 desc) as ranking
@@ -70,7 +87,8 @@ order by 3 desc;
 
 --Q9 Identify 5 branch with highest decrease ratio in revenue compare to last year(2022 and the year 2023)
 -- revenue decrease ratio = (last_year_rev - current_year_rev)/last_year_rev * 100
-Select *,To_Date(date, 'DD/MM/YY') as "Date" From "Firm1"
+
+-- Select *,To_Date(date, 'DD/MM/YY') as "Date" From "Firm1"
 
 With revenue_2022 as(
 Select branch , Sum(total_amount) as revenue
@@ -91,5 +109,26 @@ on one.branch = two.branch
 order by 4 desc
 Limit 5;
 
+--Q10 Identify the categories contributing to more than 25% of the total revenue in the dataset.
+
+WITH revenue_per_product AS (
+    SELECT 
+        category,
+        SUM(total_amount) AS product_revenue
+    FROM sales
+    GROUP BY category
+),
+ranked_products AS (
+    SELECT 
+        category,
+        product_revenue,
+        product_revenue / (SELECT SUM(total_amount) FROM sales) * 100 AS revenue_pct,
+        SUM(product_revenue) OVER (ORDER BY product_revenue DESC) 
+            / (SELECT SUM(total_amount) FROM sales) * 100 AS cumulative_pct
+    FROM revenue_per_product
+)
+SELECT *
+FROM ranked_products
+WHERE cumulative_pct >= 25;
 
 	   
